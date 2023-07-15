@@ -62,6 +62,15 @@ void PmergeMe::mainFunc(int argc, char **argv)
 {
     for (int i = 1; i < argc; i++)
         list.push_back(stringToInt(argv[i]));
+    for (int i = 1; i < argc; i++)
+        deque.push_back(stringToInt(argv[i]));
+    double start1 = clock();
     mergeSort(list);
+    double end1 = clock();
+    double start2 = clock();
+    mergeSort(deque);
+    double end2 = clock();
+    std::cout << "Merge sort time for std::list with a " << list.size() << " element is : " <<  (end1 - start1) / CLOCKS_PER_SEC << " us" << std::endl;
+    std::cout << "Merge sort time for std::deque with a " << list.size() << " element is : " <<  (end2 - start2) / CLOCKS_PER_SEC  << " us" << std::endl;
     printContainer(list);
 }

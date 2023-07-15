@@ -36,10 +36,10 @@ void BitcoinExchange::ReadDatabase()
         std::cout << "Error opening file" << std::endl;
         return;
     }
-    myfile >> line;
+    std::getline(myfile, line);
     while (!myfile.eof())
     {
-        myfile >> line;
+        std::getline(myfile, line);
         std::string date = line.substr(0, line.find(','));
         std::string price = line.substr(line.find(',') + 1, line.length());
         this->database.insert(std::make_pair(date.substr(0,10).erase(4,1).erase(6,1), std::stof(price)));
@@ -154,26 +154,10 @@ int BitcoinExchange::ParseInput(int year, int month, int day, float value, std::
 
 void BitcoinExchange::PrintOutput(std::string date, float value)
 {
-    std::map<std::string, float>::iterator it = this->database.begin();
-    std::map<std::string, float>::iterator ite = this->database.end();
-    bool found = false;
 
-    while (it != ite)
-    {
-        if (it->first == date)
-        {
-            found = true;
-            std::cout << date.insert(4,"-").insert(7,"-") << " => " << value << " = " << it->second * value << std::endl;
-            break ;
-        }
-        it++;
-    }
-    if (found == false)
-    {
-        std::map<std::string, float>::iterator end = this->database.upper_bound(date);
-        end--;
-        std::cout << date.insert(4,"-").insert(7,"-") << " => " << value << " = " << value * end->second  << std::endl;
-    }
+    std::map<std::string, float>::iterator end = this->database.upper_bound(date);
+    end--;
+    std::cout << date.insert(4,"-").insert(7,"-") << " => " << value << " = " << value * end->second  << std::endl;
 }
 
 

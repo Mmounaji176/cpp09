@@ -64,7 +64,7 @@ int    RPN::Calculate(int n1 , int n2, char op)
     if (n2 == 0 && op == '/')
     {
         std::cout << "Division by zero" << std::endl;
-        exit(1);
+        // exit(1);
     }
     if (op == '*')
         return n1 * n2;
