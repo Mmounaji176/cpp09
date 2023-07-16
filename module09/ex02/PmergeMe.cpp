@@ -48,7 +48,7 @@ int stringToInt(std::string str)
 void PmergeMe::parse(int argc, char **argv)
 {
     for (int i = 1; i < argc; i++)
-    {
+    {//check for positive numbers
         std::string str = argv[i];
         if (!isNumber(str) || str.empty())
         {

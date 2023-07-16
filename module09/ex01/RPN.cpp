@@ -39,6 +39,11 @@ void    RPN::ReadInput(std::string input)
         }
         else if (operations.find(input[i]) != std::string::npos)
         {
+            if (this->stack.size() < 2)
+            {
+                std::cout << "Invalid input" << std::endl;
+                return ;
+            }
             OperationsNum++;
             int num1 = this->stack.top();
              this->stack.pop();
@@ -51,7 +56,7 @@ void    RPN::ReadInput(std::string input)
             return ;
         }
     }
-    if ((OperationsNum + 1) != NumbersNum)
+    if (NumbersNum - OperationsNum != 1)
     {
         std::cout << "Invalid input" << std::endl;
         return ;

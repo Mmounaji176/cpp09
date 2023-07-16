@@ -160,7 +160,7 @@ void BitcoinExchange::PrintOutput(std::string date, float value)
 {
     if (date < this->database.begin()->first)
     {
-        std::cout << date.insert(4,"-").insert(7,"-") << " => " << value << " " << " = " << value * 0.00  << std::endl;
+        std::cout << date.insert(4,"-").insert(7,"-") << " => " << value << " " << " = " << value * this->database.begin()->second  << std::endl;
         return ;
     }
     std::map<std::string, float>::iterator val = this->database.upper_bound(date);
