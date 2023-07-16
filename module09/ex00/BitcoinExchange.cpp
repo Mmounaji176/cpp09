@@ -36,10 +36,10 @@ void BitcoinExchange::ReadDatabase()
         std::cout << "Error opening file" << std::endl;
         return;
     }
-    std::getline(myfile, line);
+    myfile >> line;
     while (!myfile.eof())
     {
-        std::getline(myfile, line);
+        myfile >> line;
         std::string date = line.substr(0, line.find(','));
         std::string price = line.substr(line.find(',') + 1, line.length());
         this->database.insert(std::make_pair(date.substr(0,10).erase(4,1).erase(6,1), std::stof(price)));
@@ -76,6 +76,11 @@ void    BitcoinExchange::ReadInput(std::string filename)
         return;
     }
     std::getline(myfile, line);
+    if (line != "date | value")
+    {
+        std::cerr << "Invalid input" << std::endl;
+        return ;
+    }
     while (!myfile.eof())
     {
         std::getline(myfile, line);
@@ -105,7 +110,7 @@ void    BitcoinExchange::ReadInput(std::string filename)
         {
             std::string fulldate;
             if (month_int < 10 && day_int < 10)
-                fulldate = std::to_string(year_int * 10) + std::to_string(day_int * 10) + std::to_string(day_int);
+                fulldate = std::to_string(year_int * 10) + std::to_string(month_int * 10) + std::to_string(day_int);
             else if (month_int < 10)
                 fulldate = std::to_string(year_int * 10) + std::to_string(month_int) + std::to_string(day_int);
             else if (day_int < 10)
@@ -132,7 +137,6 @@ int BitcoinExchange::ParseInput(int year, int month, int day, float value, std::
         std::cerr << "Invalid pipe" << std::endl;
         return -1;
     }
-
     int month_limits[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     if (year < 2009 || month < 1 || month > 12)
     {
@@ -154,10 +158,14 @@ int BitcoinExchange::ParseInput(int year, int month, int day, float value, std::
 
 void BitcoinExchange::PrintOutput(std::string date, float value)
 {
-
-    std::map<std::string, float>::iterator end = this->database.upper_bound(date);
-    end--;
-    std::cout << date.insert(4,"-").insert(7,"-") << " => " << value << " = " << value * end->second  << std::endl;
+    if (date < this->database.begin()->first)
+    {
+        std::cout << date.insert(4,"-").insert(7,"-") << " => " << value << " " << " = " << value * 0.00  << std::endl;
+        return ;
+    }
+    std::map<std::string, float>::iterator val = this->database.upper_bound(date);
+    val--;
+    std::cout << date.insert(4,"-").insert(7,"-") << " => " << value << " " << " = " << value * val->second  << std::endl;
 }
 
 
