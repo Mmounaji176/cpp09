@@ -36,13 +36,13 @@ void BitcoinExchange::ReadDatabase()
         std::cout << "Error opening file" << std::endl;
         return;
     }
-    myfile >> line;
+    std::getline(myfile, line);
     while (!myfile.eof())
     {
-        myfile >> line;
+        std::getline(myfile, line);
         std::string date = line.substr(0, line.find(','));
         std::string price = line.substr(line.find(',') + 1, line.length());
-        this->database.insert(std::make_pair(date.substr(0,10).erase(4,1).erase(6,1), std::stof(price)));
+        this->database.insert(std::make_pair(date.erase(4,1).erase(6,1), std::stof(price)));
     }
     myfile.close();
 }
@@ -93,7 +93,8 @@ void    BitcoinExchange::ReadInput(std::string filename)
         std::string month = line.substr(5, 2);
         std::string day = line.substr(8, 2);
         std::string price = line.substr(12, line.length());
-        price.erase(remove(price.begin(), price.end(), ' '), price.end());
+        //remove spaces
+        std::remove(price.begin(), price.end(), ' ');
 
         if (!isNumber(year) || !isNumber(month) || !isNumber(day) || !isNumber(price))
         {
