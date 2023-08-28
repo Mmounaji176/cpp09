@@ -29,7 +29,7 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &other)
 
 bool isNumber(std::string str)
 {
-    long long int number = std::stoll(str);
+    long long int number = atoll(str.c_str());
     if (number > INT_MAX || number < INT_MIN)
         return false;
     for (std::string::iterator it = str.begin(); it != str.end(); it++)
@@ -80,6 +80,7 @@ void PmergeMe::mainFunc(int argc, char **argv)
     std::cout << "after :" ;
     printContainer(list);
     std::cout << std::endl;
-    std::cout << "Merge sort time for std::list with a " << list.size() << " element is : " << std::fixed << std::setprecision(5) <<  (end1 - start1) / CLOCKS_PER_SEC * 1000000 << " us" << std::endl;
-    std::cout << "Merge sort time for std::vector with a " << vector.size() << " element is : " << std::fixed << std::setprecision(5) << (end2 - start2) / CLOCKS_PER_SEC * 1000000 << " us" << std::endl;
+    std::cout << "Merge sort time for std::list with a " << list.size() << " element is : " << std::fixed << std::setprecision(5) <<  (end1 - start1) / CLOCKS_PER_SEC * 1000000<< " us" << std::endl;
+    std::cout << "Merge sort time for std::vector with a " << vector.size() << " element is : " << std::fixed << std::setprecision(5) << (end2 - start2) / CLOCKS_PER_SEC * 1000000<< " us" << std::endl;
 }
+

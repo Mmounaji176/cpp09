@@ -4,9 +4,12 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <iomanip>
 #include <list>
 #include <vector>
+#include <climits>
 #include <algorithm>
+#include <cstdlib>  
 
 class PmergeMe
 {
@@ -21,6 +24,23 @@ class PmergeMe
         int parse(int argc, char **argv);
         void mainFunc(int argc, char **argv);
 };
+
+
+template <typename T>
+int checkSort(T &container)
+{
+    typename T::iterator it = container.begin();
+    typename T::iterator itNext = container.begin();
+    itNext++;
+    while (itNext != container.end())
+    {
+        if (*it > *itNext)
+            return 0;
+        it++;
+        itNext++;
+    }
+    return 1; 
+}
 
 template <typename T>
 void printContainer(T &container)
