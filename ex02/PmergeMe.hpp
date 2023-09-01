@@ -50,6 +50,32 @@ void printContainer(T &container)
 }
 
 template <typename T>
+void    insertionAlgo(T &container)
+{
+    typename T::iterator it = container.begin();
+    typename T::iterator itNext = container.begin();
+    itNext++;
+    while (itNext != container.end())
+    {
+        if (*it > *itNext)
+        {
+            typename T::iterator itPrev = it;
+            itPrev--;
+            while (itPrev != container.begin() && *itPrev > *itNext)
+                itPrev--;
+            itPrev++;
+            container.insert(itPrev, *itNext);
+            itNext = container.erase(itNext);
+        }
+        else
+        {
+            it++;
+            itNext++;
+        }
+    }
+}
+
+template <typename T>
 void    merge(T &container, T &left, T &right)
 {
     typename T::iterator it = container.begin();
@@ -69,7 +95,7 @@ void    merge(T &container, T &left, T &right)
 }
 
 template <typename T>
-void mergeSort(T &container)
+void mergeInsertionSort(T &container)
 {
     int size = container.size();
     if (size == 1)
@@ -82,8 +108,8 @@ void mergeSort(T &container)
         left.push_back(*it++);
     for (int i = middle; i < size; i++)
         right.push_back(*it++);
-    mergeSort(left);
-    mergeSort(right);
+    mergeInsertionSort(left);
+    mergeInsertionSort(right);
     merge(container, left, right);
 }
 
