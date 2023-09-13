@@ -49,7 +49,7 @@ void printContainer(T &container)
         std::cout << *it << " ";
 }
 template <typename T>
-void	insertionSort(T& _container) {
+void	insertion(T& _container) {
 	for (typename T::iterator it = ++_container.begin(); it != _container.end(); ++it) {
 		int value = *it;
 		typename T::iterator position = it;
@@ -62,40 +62,13 @@ void	insertionSort(T& _container) {
 }
 
 template <typename T>
-void merge(T& container, T& left, T& right) {
-    typename T::iterator it = container.begin();
-    typename T::iterator itLeft = left.begin();
-    typename T::iterator itRight = right.begin();
-    
-    while (itLeft != left.end() && itRight != right.end()) {
-        typename T::value_type leftValue = *itLeft;
-        typename T::value_type rightValue = *itRight;
-        
-        if (leftValue < rightValue)
-            *it++ = leftValue;
-        else
-            *it++ = rightValue;
-        
-        ++itLeft;
-        ++itRight;
-    }
-    
-    while (itLeft != left.end())
-        *it++ = *itLeft++;
-    
-    while (itRight != right.end())
-        *it++ = *itRight++;
-}
-
-
-template <typename T>
-T&	mergeSort(T& first, T& second) {
+T&	merge(T& first, T& second) {
 	T merge;
 
 	if (first.size() + second.size() <= 15) {
 		merge.insert(merge.end(), first.begin(), first.end());
 		merge.insert(merge.end(), second.begin(), second.end());
-		insertionSort(merge);
+		insertion(merge);
 	} else {
 		while (first.size() && second.size()) {
 			if (*first.begin() > *second.begin()) {
@@ -119,11 +92,10 @@ T&	mergeSort(T& first, T& second) {
 	return first;
 }
 
-
 template <typename T>
 T mergeInsertionSort(T& _container) {
 	if (_container.size() <= 5) {
-		insertionSort(_container);
+		insertion(_container);
 		return _container;
 	}
 	typename T::iterator middle = _container.begin();
@@ -135,7 +107,6 @@ T mergeInsertionSort(T& _container) {
 	first = mergeInsertionSort(first);
 	second = mergeInsertionSort(second);
 
-	return mergeSort(first, second);
+	return merge(first, second);
 }
-
 #endif
