@@ -72,10 +72,10 @@ void PmergeMe::mainFunc(int argc, char **argv)
     printContainer(list);
     std::cout << std::endl;
     double start1 = clock();
-    mergeSort(list);
+    list = mergeInsertionSort(list);
     double end1 = clock();
     double start2 = clock();
-    mergeSort(vector);
+    vector = mergeInsertionSort(vector);
     double end2 = clock();
     std::cout << "after :" ;
     printContainer(list);
