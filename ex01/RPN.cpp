@@ -32,18 +32,18 @@ void    RPN::ReadInput(std::string input)
     {
         if (input[i] == ' ')
             continue;
+        if (operations.find(input[i]) != std::string::npos)
+        {
+            OperationsNum++;
+            int num1 = this->stack.top();
+            this->stack.pop();
+            int num2 = this->stack.top();
+            this->stack.top() = this->Calculate(num2, num1, input[i]);
+        }
         else if (isdigit(input[i]))
         {
             NumbersNum++;
             this->stack.push(input[i] - '0');
-        }
-        else if (operations.find(input[i]) != std::string::npos)
-        {
-            OperationsNum++;
-            int num1 = this->stack.top();
-             this->stack.pop();
-            int num2 = this->stack.top();
-            this->stack.top() = this->Calculate(num2, num1, input[i]);
         }
         else
         {

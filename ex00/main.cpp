@@ -10,7 +10,6 @@ int main(int ac, char **av)
     }
     BitcoinExchange exchange;
     exchange.ReadDatabase();
-    // exchange.PrintDatabase();
     exchange.ReadInput(av[1]);
     return 0;
 }

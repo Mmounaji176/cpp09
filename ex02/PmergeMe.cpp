@@ -68,18 +68,25 @@ void PmergeMe::mainFunc(int argc, char **argv)
         list.push_back(stringToInt(argv[i]));
     for (int i = 1; i < argc; i++)
         vector.push_back(stringToInt(argv[i]));
+    
     std::cout << "before :" ;
-    printContainer(list);
+    for (std::list<int>::iterator it = list.begin(); it != list.end(); it++)
+        std::cout << *it << " ";
     std::cout << std::endl;
+
     double start1 = clock();
-    list = mergeInsertionSort(list);
+    mergeInsertionSort(list);
     double end1 = clock();
+
     double start2 = clock();
-    vector = mergeInsertionSort(vector);
+    mergeInsertionSort(vector);
     double end2 = clock();
+
     std::cout << "after :" ;
-    printContainer(list);
+    for (std::list<int>::iterator it = list.begin(); it != list.end(); it++)
+        std::cout << *it << " ";
     std::cout << std::endl;
+    
     std::cout << "Merge sort time for std::list with a " << list.size() << " element is : " << std::fixed << std::setprecision(5) <<  (end1 - start1) / CLOCKS_PER_SEC * 1000000<< " us" << std::endl;
     std::cout << "Merge sort time for std::vector with a " << vector.size() << " element is : " << std::fixed << std::setprecision(5) << (end2 - start2) / CLOCKS_PER_SEC * 1000000<< " us" << std::endl;
 }

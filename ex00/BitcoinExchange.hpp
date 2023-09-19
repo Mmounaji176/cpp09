@@ -3,8 +3,10 @@
 
 #include <iostream>  
 #include <string>
+#include <climits>
 #include <sstream>
 #include <algorithm>
+#include <iomanip>
 #include <fstream>
 #include <map>
 #include <cstdlib>

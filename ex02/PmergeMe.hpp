@@ -62,51 +62,46 @@ void	insertion(T& _container) {
 }
 
 template <typename T>
-T&	merge(T& first, T& second) {
+T	merge(T& first, T& second) {
 	T merge;
 
-	if (first.size() + second.size() <= 15) {
-		merge.insert(merge.end(), first.begin(), first.end());
-		merge.insert(merge.end(), second.begin(), second.end());
-		insertion(merge);
-	} else {
-		while (first.size() && second.size()) {
-			if (*first.begin() > *second.begin()) {
-				merge.insert(merge.end(), *second.begin());
-				second.erase(second.begin());
-			} else {
-				merge.insert(merge.end(), *first.begin());
-				first.erase(first.begin());
-			}
-		}
-		while (first.size()) {
+	while (first.size() && second.size()) {
+		if (*first.begin() > *second.begin()) {
+			merge.insert(merge.end(), *second.begin());
+			second.erase(second.begin());
+		} else {
 			merge.insert(merge.end(), *first.begin());
 			first.erase(first.begin());
 		}
-		while (second.size()) {
-			merge.insert(merge.end(), *second.begin());
-			second.erase(second.begin());
-		}
 	}
-	first = merge;
-	return first;
+	while (first.size()) {
+		merge.insert(merge.end(), *first.begin());
+		first.erase(first.begin());
+	}
+	while (second.size()) {
+		merge.insert(merge.end(), *second.begin());
+		second.erase(second.begin());
+	}
+	return merge;
 }
 
 template <typename T>
-T mergeInsertionSort(T& _container) {
-	if (_container.size() <= 5) {
-		insertion(_container);
-		return _container;
-	}
-	typename T::iterator middle = _container.begin();
-	std::advance(middle, _container.size() / 2);
+void mergeInsertionSort(T& _container) {
+    if (_container.size() <= 10) {
+        insertion(_container);
+        return;
+    }
+    typename T::iterator middle = _container.begin();
+	//move iterator n position
+    std::advance(middle, _container.size() / 2);
 
-	T first(_container.begin(), middle);
-	T second(middle, _container.end());
+    T first(_container.begin(), middle);
+    T second(middle, _container.end());
 
-	first = mergeInsertionSort(first);
-	second = mergeInsertionSort(second);
+    mergeInsertionSort(first);
+    mergeInsertionSort(second);
 
-	return merge(first, second);
+    _container = merge(first, second);
 }
+
 #endif

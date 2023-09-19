@@ -65,6 +65,7 @@ bool isNumber(std::string str)
     }
     return true;
 }
+
 void    BitcoinExchange::ReadInput(std::string filename)
 {
     std::ifstream myfile;
@@ -92,9 +93,7 @@ void    BitcoinExchange::ReadInput(std::string filename)
         std::string year = line.substr(0, 4);
         std::string month = line.substr(5, 2);
         std::string day = line.substr(8, 2);
-        std::string price = line.substr(12, line.length());
-        price.erase(std::remove(price.begin(), price.end(), ' '), price.end());
-
+        std::string price = line.substr(13, line.length());
         if (!isNumber(year) || !isNumber(month) || !isNumber(day) || !isNumber(price))
         {
             std::cerr << "Invalid input4" << std::endl;
@@ -103,7 +102,7 @@ void    BitcoinExchange::ReadInput(std::string filename)
         int day_int = atoi(day.c_str());
         int month_int = atoi(month.c_str());
         int year_int = atoi(year.c_str());
-        double price_double = atof(price.c_str());
+        double price_double = strtod(price.c_str(), NULL);
         if (ParseInput(year_int, month_int, day_int, price_double, line) == -1)
             continue ;
         else
@@ -128,6 +127,7 @@ void    BitcoinExchange::ReadInput(std::string filename)
 
 int BitcoinExchange::ParseInput(int year, int month, int day, double value, std::string line)
 {
+    int month_limits[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     if (line.substr(4,1) != "-" || line.substr(7,1) != "-")
     {
         std::cerr << "Invalid Date form" << std::endl;
@@ -139,7 +139,11 @@ int BitcoinExchange::ParseInput(int year, int month, int day, double value, std:
         std::cerr << "Invalid pipe" << std::endl;
         return -1;
     }
-    int month_limits[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (value < 0.00 || value > 1000.00 )
+    {
+        std::cerr << "value out of range\n";
+        return (-1);
+    }
     if (year < 2009 || month < 1 || month > 12)
     {
         std::cerr << "Invalid Date Format\n";
@@ -147,12 +151,7 @@ int BitcoinExchange::ParseInput(int year, int month, int day, double value, std:
     }
     if (day > month_limits[month - 1] || day < 1)
     {
-        std::cerr << "Out of month range\n";
-        return (-1);
-    }
-    if (value < 0.00 || value > 1000.00 )
-    {
-        std::cerr << "Rate out of range\n";
+        std::cerr << "month Out of range\n";
         return (-1);
     }
     return (0);
@@ -167,7 +166,7 @@ void BitcoinExchange::PrintOutput(std::string date, double value)
     }
     std::map<std::string, double>::iterator val = this->database.upper_bound(date);
     val--;
-    std::cout << date.insert(4,"-").insert(7,"-") << " => " << value << " " << " = " << value * val->second  << std::endl;
+    std::cout << date.insert(4,"-").insert(7,"-") << " => " << value << " " << " = " << std::fixed << std::setprecision(2) << value * val->second  << std::endl;
 }
 
 
